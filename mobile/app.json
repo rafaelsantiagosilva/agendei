@@ -4,17 +4,22 @@
 		"slug": "agendei",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/images/icon.png",
+		"icon": "./src/assets/icon.png",
 		"scheme": "myapp",
 		"userInterfaceStyle": "automatic",
 		"newArchEnabled": true,
+		"splash": {
+			"image": "./src/assets/icon.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#0d6efd"
+		},
 		"ios": {
 			"supportsTablet": true
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/images/adaptive-icon.png",
-				"backgroundColor": "#ffffff"
+				"foregroundImage": "./src/assets/icon.png",
+				"backgroundColor": "#0d6efd"
 			}
 		},
 		"web": {
