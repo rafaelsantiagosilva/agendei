@@ -5,6 +5,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@/theme": [
+        "./src/styles/theme.ts"
       ]
     }
   },
