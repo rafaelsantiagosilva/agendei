@@ -7,8 +7,14 @@
         "./src/*"
       ],
       "@/theme": [
-        "./src/styles/theme.ts"
-      ]
+        "./src/constants/theme.ts"
+      ],
+      "@/assets/*": [
+        "./src/assets/*"
+      ],
+      "@/icons": [
+        "./src/constants/icons.ts"
+      ],
     }
   },
   "include": [
