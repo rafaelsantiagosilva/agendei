@@ -132,3 +132,5 @@ export const doctorServices: DoctorServiceInterface[] = [
     price: 1700
   }
 ];
+
+export const schedules = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00"];
