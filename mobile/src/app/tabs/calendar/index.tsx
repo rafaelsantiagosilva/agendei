@@ -6,8 +6,7 @@ import { Header } from '@/components/header';
 
 export function Calendar() {
 	return (
-		<View>
-			<Header text='Minhas Reservas' />
+		<View style={styles.container}>
 			<FlatList
 				data={appointments}
 				style={styles.appointmentsList}

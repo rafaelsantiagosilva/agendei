@@ -7,7 +7,6 @@ import { Header } from '@/components/header';
 export function Home() {
 	return (
 		<View style={styles.container}>
-			<Header logo={true} />
 			<Text style={styles.title}>Agende seus serviços médicos</Text>
 			<FlatList
 				data={doctors}

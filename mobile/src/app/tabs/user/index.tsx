@@ -8,7 +8,6 @@ import { Header } from '@/components/header';
 export function User() {
 	return (
 		<View style={styles.container}>
-      <Header text='Meu Perfil' />
 			<UserInfo title='Nome' info='Heber Stein Mazutti' />
       <UserInfo title='E-mail' info='heber@99coders.com.br' />
 		</View>

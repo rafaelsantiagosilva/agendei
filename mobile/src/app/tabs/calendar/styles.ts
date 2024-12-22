@@ -5,7 +5,6 @@ export const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     flex: 1,
-    paddingTop: 20,
     justifyContent: "center"
   },
   title: {
