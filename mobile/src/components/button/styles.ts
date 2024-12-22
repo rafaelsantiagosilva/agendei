@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors } from "@/theme";
+import { colors, fontSize } from "@/theme";
 
 export const styles = StyleSheet.create({
   btn: {
@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
   },
   text: {
     color: colors.white,
-    fontSize: 25
+    textAlign: "center",
+    fontSize: fontSize.md
   }
 });
