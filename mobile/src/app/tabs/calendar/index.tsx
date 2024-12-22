@@ -1,8 +1,7 @@
-import { View, Text, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { appointments } from '@/helpers/fakeData';
 import { Appointment } from '@/components/appointment';
 import { styles } from './styles';
-import { Header } from '@/components/header';
 
 export function Calendar() {
 	return (

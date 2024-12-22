@@ -1,9 +1,6 @@
-import { View, Text, FlatList } from 'react-native';
+import { View } from 'react-native';
 import { styles } from './styles';
-import { doctors } from '@/helpers/fakeData';
-import { Doctor } from '@/components/doctor';
 import { UserInfo } from '@/components/userInfo';
-import { Header } from '@/components/header';
 
 export function User() {
 	return (

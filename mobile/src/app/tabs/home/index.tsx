@@ -2,7 +2,6 @@ import { View, Text, FlatList } from 'react-native';
 import { styles } from './styles';
 import { doctors } from '@/helpers/fakeData';
 import { Doctor } from '@/components/doctor';
-import { Header } from '@/components/header';
 
 export function Home() {
 	return (
