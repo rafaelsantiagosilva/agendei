@@ -2,12 +2,27 @@ import { db } from "@/lib/prisma";
 import { Doctor } from "@prisma/client";
 
 export class DoctorRepository {
-  public static async getAll() {
-    return await db.doctor.findMany();
+  public static async getAll(name: string | undefined) {
+    return await db.doctor.findMany({
+      where: name ? {
+        name: {
+          contains: name,
+        }
+      } : {},
+      orderBy: {
+        name: "asc"
+      }
+    });
   }
 
-  public static async create(doctor: Doctor) {
-    await db.doctor.create({ data: doctor });
+  public static async create({ name, specialty, icon }: Doctor) {
+    await db.doctor.create({
+      data: {
+        name,
+        specialty,
+        icon
+      }
+    });
   }
 
   public static async update(doctor: Doctor) {
