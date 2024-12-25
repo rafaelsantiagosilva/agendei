@@ -1,5 +1,11 @@
 import { db } from "@/lib/prisma";
-import { Doctor } from "@prisma/client";
+import { Doctor, Service } from "@prisma/client";
+
+interface ServiceWithPrice {
+  id: number;
+  description: string;
+  price: number;
+}
 
 export class DoctorRepository {
   public static async getAll(name: string | undefined) {
@@ -13,6 +19,25 @@ export class DoctorRepository {
         name: "asc"
       }
     });
+  }
+
+  public static async getServices(doctor_id: number) {
+    const doctorServices = await db.doctorService.findMany({
+      where: {
+        doctor_id
+      },
+      include: {
+        service: true // Join
+      }
+    })
+
+    return doctorServices.map((doctorService): ServiceWithPrice => {
+      return {
+        id: doctorService.service.id,
+        description: doctorService.service.description,
+        price: Number(doctorService.price)
+      }
+    })
   }
 
   public static async create({ name, specialty, icon }: Doctor) {

@@ -14,6 +14,17 @@ export class DoctorController {
     }
   }
 
+  public static async getServices(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+      const services = await DoctorService.getServices(id);
+      res.status(200).json(services);
+    } catch (error) {
+      console.error(`> Error in get all services doctor: ${error}`);
+      res.status(500).send({ message: "Error in get all services doctor", error });
+    }
+  }
+
   public static async create(req: Request, res: Response) {
     try {
       const { name, specialty, icon }: Doctor = req.body;

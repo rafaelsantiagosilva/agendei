@@ -1,4 +1,5 @@
 import { UserService } from "@/services/user.service";
+import { Jwt } from "@/auth/Jwt";
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
 
@@ -10,8 +11,8 @@ export class UserController {
   public static async create(req: Request, res: Response) {
     try {
       const { name, email, password }: User = req.body;
-      await UserService.create({ id: 0, name, email, password });
-      res.status(201).json({ message: "User created with success!" });
+      const userToken = await UserService.create({ id: 0, name, email, password });
+      res.status(201).json({ message: "User created with success!", userToken });
     } catch (error) {
       console.error(`> Error in create user: ${error}`);
       res.status(500).json({ message: "Error in create user", error });
@@ -23,7 +24,7 @@ export class UserController {
     const user = await UserService.login(email, password);
 
     if (!user)
-      res.status(401).json({ error: "E-mail ou senha inválido" });
+      res.status(401).json({ error: "Email or password are invalid" });
 
     res.status(200).json(user);
   }

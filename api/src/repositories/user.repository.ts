@@ -24,13 +24,15 @@ export class UserRepository {
   }
 
   public static async create({ name, email, password }: User) {
-    await db.user.create({
+    const user = await db.user.create({
       data: {
         name,
         email,
         password
       }
     });
+
+    return user;
   }
 
   public static async update(user: User) {
