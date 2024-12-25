@@ -7,6 +7,11 @@ export class DoctorService {
     return doctors;
   }
 
+  public static async getServices(id: number) {
+    const services = await DoctorRepository.getServices(id);
+    return services;
+  }
+
   public static async create({ name, specialty, icon }: Doctor) {
     await DoctorRepository.create({ id: 0, name, specialty, icon });
   }
