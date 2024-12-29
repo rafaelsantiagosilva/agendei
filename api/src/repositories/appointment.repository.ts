@@ -1,5 +1,5 @@
 import { db } from "@/lib/prisma";
-import { Doctor, Service } from "@prisma/client";
+import { Appointment, Doctor, Service } from "@prisma/client";
 
 export class AppointmentRepository {
   public static async getAll(userId: number) {
@@ -37,12 +37,15 @@ export class AppointmentRepository {
     });
   }
 
-  public static async create({ name, specialty, icon }: Doctor) {
-    await db.doctor.create({
+  public static async create({ user_id, doctor_id, service_id, booking_date, booking_hour }: Appointment) {
+    const isoBookingDate = new Date(booking_date).toISOString();
+    await db.appointment.create({
       data: {
-        name,
-        specialty,
-        icon
+        user_id,
+        doctor_id,
+        service_id,
+        booking_date: isoBookingDate,
+        booking_hour
       }
     });
   }

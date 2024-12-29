@@ -7,14 +7,9 @@ export class AppointmentService {
     return doctors;
   }
 
-  // public static async getServices(id: number) {
-  //   const services = await DoctorRepository.getServices(id);
-  //   return services;
-  // }
-
-  // public static async create({ name, specialty, icon }: Appointment) {
-  //   await AppointmentRepository.create({ id: 0, name, specialty, icon });
-  // }
+  public static async create({ user_id, doctor_id, service_id, booking_date, booking_hour }: Appointment) {
+    await AppointmentRepository.create({ id: 0, user_id, doctor_id, service_id, booking_date, booking_hour });
+  }
 
   // public static async update(appointment: Appointment) {
   //   await AppointmentRepository.update(appointment);
