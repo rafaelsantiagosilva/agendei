@@ -51,7 +51,7 @@ export class AppointmentRepository {
   }
 
   public static async update(doctor: Doctor) {
-    await db.doctor.update({
+    await db.appointment.update({
       data: doctor, where: {
         id: doctor.id
       }
@@ -59,7 +59,7 @@ export class AppointmentRepository {
   }
 
   public static async delete(id: number) {
-    await db.doctor.delete({
+    await db.appointment.delete({
       where: {
         id
       }

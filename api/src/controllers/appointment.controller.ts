@@ -29,4 +29,15 @@ export class AppointmentController {
       res.status(500).json({ message: "Error in create appointment", error });
     }
   }
+
+  public static async delete(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      await AppointmentService.delete(Number(id));
+      res.status(204).end();
+    } catch (error) {
+      console.error(`> Error in delete appointment: ${error}`);
+      res.status(500).json({ message: "Error in delete appointment", error });
+    }
+  }
 }

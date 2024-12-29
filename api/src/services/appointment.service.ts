@@ -15,7 +15,7 @@ export class AppointmentService {
   //   await AppointmentRepository.update(appointment);
   // }
 
-  // public static async delete(id: number) {
-  //   await AppointmentRepository.delete(id);
-  // }
+  public static async delete(id: number) {
+    await AppointmentRepository.delete(id);
+  }
 }
