@@ -1,11 +1,8 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
+import { RequestWithUserId } from "@/interfaces/RequestWithUserId";
 
 const secretToken = "jornadaJS2024";
-
-interface RequestWithUserId extends Request {
-  userId: number;
-}
 
 export class Jwt {
   public static createToken(userId: number) {

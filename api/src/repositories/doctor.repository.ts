@@ -27,13 +27,17 @@ export class DoctorRepository {
         doctor_id
       },
       include: {
-        service: true // Join
-      }
+        service: {
+          select: {
+            description: true
+          }
+        }
+      },
     })
 
     return doctorServices.map((doctorService): ServiceWithPrice => {
       return {
-        id: doctorService.service.id,
+        id: doctorService.service_id,
         description: doctorService.service.description,
         price: Number(doctorService.price)
       }

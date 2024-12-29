@@ -14,11 +14,11 @@ datasource db {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  name         String
-  email        String         @unique
-  password     String
-  Appointments Appointments[]
+  id          Int           @id @default(autoincrement())
+  name        String
+  email       String        @unique
+  password    String
+  Appointment Appointment[]
 
   @@map("users")
 }
@@ -39,7 +39,7 @@ model Doctor {
   icon      String
 
   DoctorService DoctorService[]
-  Appointments  Appointments[]
+  Appointment   Appointment[]
 
   @@map("doctors")
 }
@@ -49,7 +49,7 @@ model Service {
   description String
 
   DoctorService DoctorService[]
-  Appointments  Appointments[]
+  Appointment   Appointment[]
 
   @@map("services")
 }
@@ -60,23 +60,27 @@ model DoctorService {
   service_id Int
   price      Decimal
 
-  doctor  Doctor  @relation(fields: [doctor_id], references: [id])
-  service Service @relation(fields: [service_id], references: [id])
+  doctor      Doctor        @relation(fields: [doctor_id], references: [id])
+  service     Service       @relation(fields: [service_id], references: [id])
+  Appointment Appointment[]
 
+  @@unique([doctor_id, service_id])
   @@map("doctors_services")
 }
 
-model Appointments {
-  id           Int  @id @default(autoincrement())
+model Appointment {
+  id           Int      @id @default(autoincrement())
   doctor_id    Int
   service_id   Int
   user_id      Int
-  booking_date DateTime 
+  booking_date DateTime
   booking_hour String
 
   doctor  Doctor  @relation(fields: [doctor_id], references: [id])
   service Service @relation(fields: [service_id], references: [id])
   user    User    @relation(fields: [user_id], references: [id])
+
+  doctorService DoctorService @relation(fields: [doctor_id, service_id], references: [doctor_id, service_id])
 
   @@map("appointments")
 }
