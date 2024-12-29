@@ -1,13 +1,9 @@
+import { RequestWithUserId } from "@/interfaces/RequestWithUserId";
 import { UserService } from "@/services/user.service";
-import { Jwt } from "@/auth/Jwt";
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
 
 export class UserController {
-  public static async getAll(req: Request, res: Response) {
-
-  }
-
   public static async create(req: Request, res: Response) {
     try {
       const { name, email, password }: User = req.body;
@@ -29,11 +25,14 @@ export class UserController {
     res.status(200).json(user);
   }
 
-  public static async update(req: Request, res: Response) {
-
-  }
-
-  public static async delete(req: Request, res: Response) {
-
+  public static async profile(req: Request, res: Response) {
+    try {
+      const userId = (req as RequestWithUserId)["userId"];
+      const user = await UserService.profile(userId);
+      res.status(200).json(user);
+    } catch (error) {
+      console.error(`> Error in get the user profile: ${error}`);
+      res.status(500).json({ message: "Error in get the user profile", error });
+    }
   }
 }

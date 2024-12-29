@@ -23,6 +23,19 @@ export class UserRepository {
     });
   }
 
+  public static async findById(id: number) {
+    return await db.user.findFirst({
+      where: {
+        id
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      }
+    });
+  }
+
   public static async create({ name, email, password }: User) {
     const user = await db.user.create({
       data: {

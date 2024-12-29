@@ -31,6 +31,11 @@ export class UserService {
     return undefined;
   }
 
+  public static async profile(userId: number) {
+    const user = await UserRepository.findById(userId);
+    return user;
+  }
+
   public static async update(User: User) {
     await UserRepository.update(User);
   }
