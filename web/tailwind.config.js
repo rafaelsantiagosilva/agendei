@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "blue-doctor": "url('/src/assets/blue-doctor-background.png')",
+      }
+    },
   },
   plugins: [],
 }

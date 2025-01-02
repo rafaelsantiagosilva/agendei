@@ -1,7 +1,11 @@
+// import Login from "./pages/login"
+import Register from "./pages/register"
+
 function App() {
   return (
     <>
-      <h1>Hello, World!</h1>
+      {/* <Login /> */}
+      <Register />
     </>
   )
 }
