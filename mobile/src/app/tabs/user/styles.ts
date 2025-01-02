@@ -16,5 +16,12 @@ export const styles = StyleSheet.create({
     display: "flex",
     width: "100%",
     gap: 2,
+  },
+  buttonLogout: {
+    width: "90%",
+    borderRadius: 6,
+    marginTop: 21,
+    backgroundColor: colors.red,
+    paddingVertical: 6,
   }
 });

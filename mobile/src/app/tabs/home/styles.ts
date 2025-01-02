@@ -18,5 +18,16 @@ export const styles = StyleSheet.create({
     display: "flex",
     width: "100%",
     gap: 2,
+  },
+  notDoctorsContainer: {
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  notDoctors: {
+    textAlign: "center",
+    fontSize: 21,
+    width: "70%",
+    color: colors.lightGray
   }
 });

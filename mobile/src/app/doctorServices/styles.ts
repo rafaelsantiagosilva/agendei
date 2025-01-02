@@ -10,18 +10,11 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.blue,
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 24
-  },
-  title: {
-    textAlign: "center",
-    color: colors.white,
-    fontWeight: 600,
-    fontSize: fontSize.lg
+    paddingBottom: 24
   },
   doctor: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 24
   },
   doctorName: {
     textAlign: "center",
@@ -35,5 +28,16 @@ export const styles = StyleSheet.create({
   doctorIcon: {
     width: 76,
     height: 76
+  },
+  notServicesContainer: {
+    height: "70%",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  notServices: {
+    textAlign: "center",
+    fontSize: 21,
+    width: "70%",
+    color: colors.lightGray
   }
 });

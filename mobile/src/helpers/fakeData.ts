@@ -1,6 +1,7 @@
 import DoctorInterface from "@/interfaces/Doctor";
 import AppointmentInterface from "@/interfaces/Appointment";
 import DoctorServiceInterface from "@/interfaces/DoctorService";
+import UserInterface from "@/interfaces/User";
 
 export const doctors: DoctorInterface[] = [
   {
@@ -59,56 +60,56 @@ export const doctors: DoctorInterface[] = [
   }
 ];
 
-export const appointments: AppointmentInterface[] = [
-  {
-    id: 1,
-    service: "Consulta",
-    doctor: "Dra. Nise da Silveira",
-    specialty: "Cirurgia Plástica",
-    booking_date: "2024-10-25",
-    booking_hour: "08:30",
-  },
-  {
-    id: 2,
-    service: "Consulta",
-    doctor: "Dr. Antônio Almeida Souza",
-    specialty: "Pediatria",
-    booking_date: "2024-10-28",
-    booking_hour: "15:40",
-  },
-  {
-    id: 3,
-    service: "Consulta",
-    doctor: "Dra. Roberta Martins",
-    specialty: "Clínica Geral",
-    booking_date: "2024-11-05",
-    booking_hour: "14:15",
-  },
-  {
-    id: 4,
-    service: "Consulta",
-    doctor: "Dra. Nise da Silveira",
-    specialty: "Cirurgia Plástica",
-    booking_date: "2024-11-18",
-    booking_hour: "11:00",
-  },
-  {
-    id: 5,
-    service: "Consulta",
-    doctor: "Dr. Antônio Almeida Souza",
-    specialty: "Pediatria",
-    booking_date: "2024-12-02",
-    booking_hour: "10:40",
-  },
-  {
-    id: 6,
-    service: "Consulta",
-    doctor: "Dra. Roberta Martins",
-    specialty: "Clínica Geral",
-    booking_date: "2024-12-14",
-    booking_hour: "17:30",
-  }
-];
+// export const appointments: AppointmentInterface[] = [
+//   {
+//     id: 1,
+//     service: "Consulta",
+//     doctor: "Dra. Nise da Silveira",
+//     specialty: "Cirurgia Plástica",
+//     booking_date: "2024-10-25",
+//     booking_hour: "08:30",
+//   },
+//   {
+//     id: 2,
+//     service: "Consulta",
+//     doctor: "Dr. Antônio Almeida Souza",
+//     specialty: "Pediatria",
+//     booking_date: "2024-10-28",
+//     booking_hour: "15:40",
+//   },
+//   {
+//     id: 3,
+//     service: "Consulta",
+//     doctor: "Dra. Roberta Martins",
+//     specialty: "Clínica Geral",
+//     booking_date: "2024-11-05",
+//     booking_hour: "14:15",
+//   },
+//   {
+//     id: 4,
+//     service: "Consulta",
+//     doctor: "Dra. Nise da Silveira",
+//     specialty: "Cirurgia Plástica",
+//     booking_date: "2024-11-18",
+//     booking_hour: "11:00",
+//   },
+//   {
+//     id: 5,
+//     service: "Consulta",
+//     doctor: "Dr. Antônio Almeida Souza",
+//     specialty: "Pediatria",
+//     booking_date: "2024-12-02",
+//     booking_hour: "10:40",
+//   },
+//   {
+//     id: 6,
+//     service: "Consulta",
+//     doctor: "Dra. Roberta Martins",
+//     specialty: "Clínica Geral",
+//     booking_date: "2024-12-14",
+//     booking_hour: "17:30",
+//   }
+// ];
 
 export const doctorServices: DoctorServiceInterface[] = [
   {
@@ -134,3 +135,10 @@ export const doctorServices: DoctorServiceInterface[] = [
 ];
 
 export const schedules = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00"];
+
+export const initialUser: UserInterface = {
+  id: 0,
+  name: "",
+  email: "",
+  token: ""
+};

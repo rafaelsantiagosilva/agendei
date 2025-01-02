@@ -2,12 +2,19 @@ import DoctorServiceInterface from '@/interfaces/DoctorService';
 import { View, Text } from 'react-native';
 import { Button } from '../button';
 import { styles } from './styles';
+import { NavigationProp } from '@react-navigation/native';
 
 interface Props {
 	service: DoctorServiceInterface;
+	doctorId: number;
+	navigation: NavigationProp<any, any>;
 }
 
-export function DoctorService({ service }: Props) {
+export function DoctorService({ service, doctorId, navigation }: Props) {
+	function handleClickService(serviceId: number) {
+		navigation.navigate('schedule', { serviceId, doctorId });
+	}
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.info}>
@@ -20,7 +27,10 @@ export function DoctorService({ service }: Props) {
 				</Text>
 			</View>
 			<View style={styles.buttonContainer}>
-				<Button style={styles.button}>
+				<Button
+					style={styles.button}
+					onPress={() => handleClickService(service.id)}
+				>
 					<Button.Text>Agendar</Button.Text>
 				</Button>
 			</View>
