@@ -1,8 +1,46 @@
 import { Header } from '../../components/header';
-import { ActionButton } from '../../components/actionButton';
 import { OutlineButton } from '../../components/outlineButton';
+import { Appointment as AppointmentInterface } from '../../interfaces/Appointment';
+import { useEffect, useState } from 'react';
+import { api } from '../../lib/api';
+import { Appointment } from './components/appointment';
+import { Link, useNavigate } from 'react-router-dom';
+import { getAppointments } from '../../services/getAppointments';
+import { Doctor as DoctorInterface } from '../../interfaces/Doctor';
+import { getDoctors } from '../../services/getDoctors';
 
 export default function Appointments() {
+	const [appointments, setAppointments] = useState<AppointmentInterface[]>([]);
+	const [doctors, setDoctors] = useState<DoctorInterface[]>([]);
+	const navigate = useNavigate();
+
+	async function loadAppointments() {
+		try {
+			const data = await getAppointments();
+			setAppointments(data);
+		} catch (error) {
+			console.error(`> Error in load appointments: ${error}`);
+		}
+	}
+
+	async function loadDoctors() {
+		try {
+			const data = await getDoctors('');
+			setDoctors(data);
+		} catch (error) {
+			console.error(`> Error in load doctors: ${error}`);
+		}
+	}
+
+	useEffect(() => {
+		if (!api.defaults.headers.common.Authorization) {
+			navigate('/');
+		}
+
+		loadAppointments();
+		loadDoctors();
+	}, [navigate]);
+
 	return (
 		<>
 			<Header page="appointments" />
@@ -10,39 +48,40 @@ export default function Appointments() {
 				<header className="flex items-center justify-between mb-8">
 					<div className="flex items-center gap-6">
 						<h1 className="text-xl font-semibold">Agendamentos</h1>
-						<OutlineButton text="Novo Agendamento" />
+						<Link to={'/appointments/add'}>
+							<OutlineButton text="Novo Agendamento" />
+						</Link>
 					</div>
 					<div className="flex items-center gap-8">
 						<div className="flex items-center gap-3">
-							<select
+							<input
 								className="border-2 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
+								type="date"
 								name=""
 								id=""
-							>
-								<option value="" defaultChecked>
-									01/10/2024
-								</option>
-							</select>
+							></input>
 							<span>até</span>
-							<select
+							<input
 								className="border-2 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
+								type="date"
 								name=""
 								id=""
-							>
-								<option value="" defaultChecked>
-									10/10/2024
-								</option>
-							</select>
+							></input>
 						</div>
 						<div className="flex gap-4 items-center">
 							<select
 								className="border-2 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
-								name=""
-								id=""
+								name="doctors"
+								id="doctors"
 							>
-								<option value="" defaultChecked>
+								<option value={0} defaultChecked>
 									Todos os médicos
 								</option>
+								{doctors.map((doctor) => (
+									<option key={doctor.id} value={doctor.id}>
+										{doctor.name}
+									</option>
+								))}
 							</select>
 							<button className="bg-blue-600 text-white p-2 px-5 rounded hover:bg-blue-500">
 								Filtrar
@@ -61,71 +100,9 @@ export default function Appointments() {
 						</tr>
 					</thead>
 					<tbody>
-						<tr className="border-y">
-							<td className="p-4">Heber Stein Mazutti</td>
-							<td>Dr. Antônio Almeida Souza</td>
-							<td>Consulta</td>
-							<td>01/10/2024 08:30h</td>
-							<td>R$ 300,00</td>
-							<td>
-								<ActionButton type="edit" />
-							</td>
-							<td>
-								<ActionButton type="delete" />
-							</td>
-						</tr>
-						<tr className="border-y">
-							<td className="p-4">Heber Stein Mazutti</td>
-							<td>Dr. Antônio Almeida Souza</td>
-							<td>Consulta</td>
-							<td>01/10/2024 08:30h</td>
-							<td>R$ 300,00</td>
-							<td>
-								<ActionButton type="edit" />
-							</td>
-							<td>
-								<ActionButton type="delete" />
-							</td>
-						</tr>
-						<tr className="border-y">
-							<td className="p-4">Heber Stein Mazutti</td>
-							<td>Dr. Antônio Almeida Souza</td>
-							<td>Consulta</td>
-							<td>01/10/2024 08:30h</td>
-							<td>R$ 300,00</td>
-							<td>
-								<ActionButton type="edit" />
-							</td>
-							<td>
-								<ActionButton type="delete" />
-							</td>
-						</tr>
-						<tr className="border-y">
-							<td className="p-4">Heber Stein Mazutti</td>
-							<td>Dr. Antônio Almeida Souza</td>
-							<td>Consulta</td>
-							<td>01/10/2024 08:30h</td>
-							<td>R$ 300,00</td>
-							<td>
-								<ActionButton type="edit" />
-							</td>
-							<td>
-								<ActionButton type="delete" />
-							</td>
-						</tr>
-						<tr className="border-y">
-							<td className="p-4">Heber Stein Mazutti</td>
-							<td>Dr. Antônio Almeida Souza</td>
-							<td>Consulta</td>
-							<td>01/10/2024 08:30h</td>
-							<td>R$ 300,00</td>
-							<td>
-								<ActionButton type="edit" />
-							</td>
-							<td>
-								<ActionButton type="delete" />
-							</td>
-						</tr>
+						{appointments.map((appointment) => {
+							return <Appointment key={appointment.id} appointment={appointment} />;
+						})}
 					</tbody>
 				</table>
 			</main>

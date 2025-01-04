@@ -1,8 +1,9 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react';
 import logo from '../assets/white-logo.png';
 import { GoTriangleDown } from 'react-icons/go';
+import { Link } from 'react-router-dom';
 
-export function Header({ page }: { page: 'appointments' | 'doctors' }) {
+export function Header({ page }: { page?: 'appointments' | 'doctors' }) {
 	return (
 		<header className="w-screen h-16 bg-blue-600 flex items-center justify-between p-2">
 			<div className="flex items-center">
@@ -12,19 +13,27 @@ export function Header({ page }: { page: 'appointments' | 'doctors' }) {
 					alt="A logo de Agendei, que possui um A inicial, com o nome da marca escrito em minusculo. Tudo em cor branca."
 				/>
 				<nav className="text-white flex gap-6">
-					<a href="#" className={`${page === "appointments" ? 'font-semibold' : ''} hover:underline`}>
+					<Link
+						to="/appointments"
+						className={`${
+							page === 'appointments' ? 'font-semibold' : ''
+						} hover:underline`}
+					>
 						Agendamentos
-					</a>
-					<a href="#" className={`${page === "doctors" ? 'font-semibold' : ''} hover:underline`}>
+					</Link>
+					<Link
+						to="/doctors"
+						className={`${page === 'doctors' ? 'font-semibold' : ''} hover:underline`}
+					>
 						Médicos
-					</a>
+					</Link>
 				</nav>
 			</div>
 			<div>
 				<Menu as="div" className="relative inline-block text-left">
 					<div>
 						<MenuButton className="p-4 text-white flex items-center">
-							<span>Heber Stein Mazutti</span>
+							<span>{localStorage.getItem("username")}</span>
 							<GoTriangleDown className="text-4xl" />
 						</MenuButton>
 					</div>
