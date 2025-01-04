@@ -1,5 +1,5 @@
 import { db } from "@/lib/prisma";
-import { Appointment, Doctor, Service } from "@prisma/client";
+import { Appointment } from "@prisma/client";
 
 export class AppointmentRepository {
   public static async getAll(userId: number) {
@@ -37,6 +37,46 @@ export class AppointmentRepository {
     });
   }
 
+  public static async getAllToAdmin() {
+    return await db.appointment.findMany({
+      include: {
+        service: {
+          select: {
+            description: true,
+          },
+        },
+        doctor: {
+          select: {
+            name: true,
+            specialty: true,
+          },
+        },
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        doctorService: {
+          select: {
+            price: true,
+          },
+        },
+      },
+      orderBy: [
+        { booking_date: "asc" },
+        { booking_hour: "asc" }
+      ]
+    });
+  }
+
+  public static async getById(id: number) {
+    return await db.appointment.findUnique({
+      where: {
+        id
+      }
+    });
+  }
+
   public static async create({ user_id, doctor_id, service_id, booking_date, booking_hour }: Appointment) {
     const isoBookingDate = new Date(booking_date).toISOString();
     await db.appointment.create({
@@ -50,11 +90,12 @@ export class AppointmentRepository {
     });
   }
 
-  public static async update(doctor: Doctor) {
+  public static async update(appointment: Appointment) {
     await db.appointment.update({
-      data: doctor, where: {
-        id: doctor.id
-      }
+      where: {
+        id: appointment.id
+      },
+      data: appointment
     });
   }
 

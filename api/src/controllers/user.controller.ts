@@ -4,6 +4,16 @@ import { User } from "@prisma/client";
 import { Request, Response } from "express";
 
 export class UserController {
+  public static async getAll(req: Request, res: Response) {
+    try {
+      const users = await UserService.getAll();
+      res.status(200).json(users);
+    } catch (error) {
+      console.error(`> Error in get all users: ${error}`);
+      res.status(500).json({ message: "Error in get all users", error });
+    }
+  }
+
   public static async create(req: Request, res: Response) {
     try {
       const { name, email, password }: User = req.body;

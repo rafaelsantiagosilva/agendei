@@ -18,6 +18,17 @@ export class AppointmentController {
 
   }
 
+  public static async getById(req: Request, res: Response) {
+    try {
+      const id = req.params?.id;
+      const appointment = await AppointmentService.getById(Number(id));
+      res.status(200).json(appointment);
+    } catch (error) {
+      console.error(`> Error in get the appointment by id: ${error}`);
+      res.status(500).send({ message: "Error in get the appointment by id", error });
+    }
+  }
+
   public static async create(req: Request, res: Response) {
     try {
       const userId = (req as RequestWithUserId)["userId"];

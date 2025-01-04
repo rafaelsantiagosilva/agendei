@@ -4,8 +4,8 @@ import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 export class UserService {
-  public static async getAll(name: string | undefined) {
-    const users = await UserRepository.getAll(name);
+  public static async getAll() {
+    const users = await UserRepository.getAll();
     return users;
   }
 

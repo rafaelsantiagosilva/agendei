@@ -2,13 +2,8 @@ import { db } from "@/lib/prisma";
 import { User } from "@prisma/client";
 
 export class UserRepository {
-  public static async getAll(name: string | undefined) {
+  public static async getAll() {
     return await db.user.findMany({
-      where: name ? {
-        name: {
-          contains: name,
-        }
-      } : {},
       orderBy: {
         name: "asc"
       }
