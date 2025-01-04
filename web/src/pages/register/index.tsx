@@ -1,8 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
-import logo from '../../assets/logo.png';
 import { useState } from 'react';
 import { Alert } from '../../components/alert';
 import { api } from '../../lib/api';
+import { Button } from '../../components/button';
+import { LoginAndRegisterHeader } from '../../components/loginAndRegisterHeader';
 
 export default function Register() {
 	const [name, setName] = useState('');
@@ -60,7 +61,7 @@ export default function Register() {
 			});
 			navigate('/login');
 		} catch (error) {
-			setAlertMessage("Ocorreu um erro. Tente novamente mais tarde.");
+			setAlertMessage('Ocorreu um erro. Tente novamente mais tarde.');
 			console.error(`> Error in create account: ${error}`);
 		}
 	}
@@ -68,16 +69,7 @@ export default function Register() {
 	return (
 		<div className="flex w-full h-full">
 			<section className="bg-white w-[45%] h-screen flex flex-col justify-between p-8">
-				<header className="flex flex-col items-center justify-center">
-					<img
-						src={logo}
-						className="w-1/4 mb-8"
-						alt="A logo de Agendei, que possui um A inicial, com o nome da marca escrito em minusculo. Tudo em cor azul."
-					/>
-					<p className="text-xl text-center text-zinc-800 font-bold">
-						Crie sua conta agora mesmo.
-					</p>
-				</header>
+				<LoginAndRegisterHeader>Crie sua conta agora mesmo.</LoginAndRegisterHeader>
 				<main className="text-center">
 					<h2 className="text-xl mb-10">Preencha os campos abaixo</h2>
 					<form
@@ -115,12 +107,7 @@ export default function Register() {
 							value={confirmPassword}
 							onChange={(event) => setConfirmPassword(event.target.value)}
 						/>
-						<button
-							type="submit"
-							className="text-white bg-blue-600 p-2 rounded hover:bg-blue-500"
-						>
-							Criar minha conta
-						</button>
+						<Button type="submit">Criar conta</Button>
 						{alertMessage.length > 0 && (
 							<Alert text={alertMessage} onClose={clearAlertMessage} />
 						)}

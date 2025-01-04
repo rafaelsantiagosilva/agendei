@@ -1,7 +1,7 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Header } from '../../components/header';
 import { OutlineButton } from '../../components/outlineButton';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { User as UserInterface } from '../../interfaces/User';
 import { Doctor as DoctorInterface } from '../../interfaces/Doctor';
 import { DoctorService as DoctorServiceInterface } from '../../interfaces/DoctorService';
@@ -12,6 +12,9 @@ import { api } from '../../lib/api';
 import { Alert } from '../../components/alert';
 import { Appointment as AppointmentInterface } from '../../interfaces/Appointment';
 import { getOneAppointment } from '../../services/getOneAppointment';
+import { Modal } from '../../components/modal';
+import { Button } from '../../components/button';
+import { StatusModal } from '../../components/statusModal';
 
 export default function AddAppointment() {
 	const appointmentId = Number(useParams()?.id);
@@ -32,19 +35,26 @@ export default function AddAppointment() {
 	const [selectedHour, setSelectedHour] = useState('09:00');
 	const [alertMessage, setAlertMessage] = useState('');
 
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+	const [successModalTitle, setSuccessModalTitle] = useState('');
+	const [successModalDescription, setSuccessModalDescription] = useState('');
+
+	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+	const [errorModalDescription, setErrorModalDescription] = useState('');
+
 	function clearAlertMessage() {
 		setAlertMessage('');
 	}
 
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	async function loadAppointment() {
+	const loadAppointment = useCallback(async () => {
 		try {
 			const data = await getOneAppointment(appointmentId);
 			setAppointment(data);
 		} catch (error) {
 			console.error(`> Error in load appointment: ${error}`);
 		}
-	}
+	}, [appointmentId]);
 
 	async function loadCustomers() {
 		try {
@@ -98,7 +108,87 @@ export default function AddAppointment() {
 			return false;
 		}
 
+		if (alertMessage.length > 0) setAlertMessage('');
+
 		return true;
+	}
+
+	function openModal() {
+		const areValids = validateValues();
+
+		if (!areValids) return;
+
+		setIsModalOpen(true);
+	}
+
+	function closeModal() {
+		setIsModalOpen(false);
+	}
+
+	function openSuccessModal() {
+		setIsSuccessModalOpen(true);
+	}
+
+	function closeSuccessModal() {
+		setIsSuccessModalOpen(false);
+	}
+
+	function openErrorModal() {
+		setIsErrorModalOpen(true);
+	}
+
+	function closeErrorModal() {
+		setIsErrorModalOpen(false);
+	}
+
+	async function handleCreateAppointment() {
+		try {
+			const appointment = {
+				user_id: selectedCustomerId,
+				doctor_id: selectedDoctorId,
+				service_id: selectedServiceId,
+				booking_date: `${date}T${selectedHour}:00`,
+				booking_hour: selectedHour,
+			};
+
+			await api.post('/admins/appointments', appointment);
+			setSuccessModalTitle('Agendamento criado com sucesso');
+			setSuccessModalDescription(
+				`Seu agendamento foi criado com sucesso. Confirme para retornar ou feche para continuar cadastrando.`
+			);
+			openSuccessModal();
+		} catch (error) {
+			console.error(`> Error in create appointment ${error}`);
+			setErrorModalDescription(
+				'Ocorreu um erro ao criar um novo agendamento. Por favor, tente novamente mais tarde.'
+			);
+			openErrorModal();
+		}
+	}
+
+	async function handleUpdateAppointment() {
+		try {
+			const newAppointment = {
+				user_id: selectedCustomerId,
+				doctor_id: selectedDoctorId,
+				service_id: selectedServiceId,
+				booking_date: `${date}T${selectedHour}:00`,
+				booking_hour: selectedHour,
+			};
+
+			await api.put(`/appointments/${appointmentId}`, newAppointment);
+			setSuccessModalTitle('Agendamento atualizado com sucesso');
+			setSuccessModalDescription(
+				`Seu agendamento foi atualizado com sucesso. Confirme para retornar ou feche para editar novamente.`
+			);
+			openSuccessModal();
+		} catch (error) {
+			console.error(`> Error in update appointment with id ${appointmentId}: ${error}`);
+			setErrorModalDescription(
+				'Ocorreu um erro ao editar o agendamento. Por favor, tente novamente mais tarde.'
+			);
+			openErrorModal();
+		}
 	}
 
 	useEffect(() => {
@@ -112,13 +202,17 @@ export default function AddAppointment() {
 		if (appointmentId) {
 			loadAppointment();
 		}
+	}, [appointmentId, navigate, loadAppointment]);
 
+	useEffect(() => {
 		if (appointment) {
 			setSelectedCustomerId(appointment?.user_id);
 			setSelectedDoctorId(appointment.doctor_id);
 			setSelectedServiceId(appointment.service_id);
+			setDate(appointment.booking_date.slice(0, 10));
+			setSelectedHour(appointment.booking_hour);
 		}
-	}, [appointment, appointmentId, loadAppointment, navigate]);
+	}, [appointment, appointmentId]);
 
 	useEffect(() => {
 		if (selectedDoctorId === 0) return;
@@ -146,7 +240,7 @@ export default function AddAppointment() {
 					<div className="w-full">
 						<label htmlFor="customer">Cliente</label>
 						<select
-							className="border-2 p-2 pr-8 rounded w-full text-zinc-800 focus:outline-none"
+							className="border-2 p-2 pr-8 cursor-pointer rounded w-full text-zinc-800 focus:outline-none"
 							onChange={(event) => setSelectedCustomerId(Number(event.target.value))}
 							value={selectedCustomerId}
 							name="customer"
@@ -167,7 +261,7 @@ export default function AddAppointment() {
 					<div className="w-full">
 						<label htmlFor="doctor">Médico</label>
 						<select
-							className="border-2 p-2 pr-8 rounded w-full text-zinc-800 focus:outline-none"
+							className="border-2 p-2 pr-8 cursor-pointer rounded w-full text-zinc-800 focus:outline-none"
 							onChange={(event) => setSelectedDoctorId(Number(event.target.value))}
 							value={selectedDoctorId}
 							name="doctor"
@@ -186,7 +280,7 @@ export default function AddAppointment() {
 					<div className="w-full">
 						<label htmlFor="service">Serviço</label>
 						<select
-							className="border-2 p-2 pr-8 rounded w-full text-zinc-800 focus:outline-none"
+							className="border-2 p-2 pr-8 cursor-pointer rounded w-full text-zinc-800 focus:outline-none"
 							onChange={(event) => setSelectedServiceId(Number(event.target.value))}
 							value={selectedServiceId}
 							name="service"
@@ -206,11 +300,11 @@ export default function AddAppointment() {
 							))}
 						</select>
 					</div>
-					<div className="flex w-full">
-						<div className="w-1/2">
+					<div className="flex gap-4 w-full">
+						<div className="flex flex-col w-1/2">
 							<label htmlFor="date">Data</label>
 							<input
-								className="border-2 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
+								className="h-10 border-2 p-2 pr-8 cursor-pointer rounded text-zinc-800 focus:outline-none"
 								onChange={(event) => setDate(event.target.value)}
 								value={date}
 								type="date"
@@ -221,15 +315,13 @@ export default function AddAppointment() {
 						<div className="flex flex-col w-1/2">
 							<label htmlFor="hour">Hora</label>
 							<select
-								className="border-2 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
+								className="h-10 border-2 p-2 pr-8 cursor-pointer rounded text-zinc-800 focus:outline-none"
 								onChange={(event) => setSelectedHour(event.target.value)}
 								value={selectedHour}
 								name="hour"
 								id="hour"
 							>
-								<option value="09:00" defaultChecked>
-									09:00
-								</option>
+								<option value="09:00">09:00</option>
 								<option value="09:30">09:30</option>
 								<option value="10:00">10:00</option>
 								<option value="10:30">10:30</option>
@@ -243,12 +335,48 @@ export default function AddAppointment() {
 						<Link to={'/appointments'}>
 							<OutlineButton text="Cancelar" />
 						</Link>
-						<button className="bg-blue-600 text-white p-2 px-5 rounded hover:bg-blue-500">
+						<Button onClick={openModal} type="submit">
 							Salvar dados
-						</button>
+						</Button>
 					</div>
 				</form>
 			</main>
+			{isNaN(appointmentId) ? (
+				<Modal
+					title="Confirmar criação de agendamento"
+					description="Você tem certeza que deseja criar um agendamento com esses dados?"
+					isOpen={isModalOpen}
+					onConfirm={() => handleCreateAppointment()}
+					onClose={closeModal}
+				/>
+			) : (
+				<Modal
+					title="Confirmar edição de agendamento"
+					description="Você tem certeza que deseja alterar para estes dados?"
+					isOpen={isModalOpen}
+					onConfirm={() => handleUpdateAppointment()}
+					onClose={closeModal}
+				/>
+			)}
+			<StatusModal
+				type="success"
+				isOpen={isSuccessModalOpen}
+				title={successModalTitle}
+				description={successModalDescription}
+				onConfirm={() => navigate('/appointments')}
+				onClose={closeSuccessModal}
+			/>
+			<StatusModal
+				type="error"
+				isOpen={isErrorModalOpen}
+				title="Erro"
+				description={errorModalDescription}
+				onConfirm={() => navigate('/appointments')}
+				onClose={() => {
+					closeErrorModal();
+					navigate('/appointments');
+				}}
+			/>
 		</>
 	);
 }

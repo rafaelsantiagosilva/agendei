@@ -1,5 +1,6 @@
 import { IoClose } from 'react-icons/io5';
 import { OutlineButton } from './outlineButton';
+import { Button } from './button';
 
 interface Props {
 	title: string;
@@ -43,12 +44,7 @@ export function Modal({
 					className="flex justify-end gap-4"
 				>
 					<OutlineButton onClick={onClose} text="Cancelar" />
-					<button
-						type="submit"
-						className="bg-blue-600 text-white p-2 px-5 rounded hover:bg-blue-500"
-					>
-						Confirmar
-					</button>
+					<Button type="submit">Confirmar</Button>
 				</form>
 			</div>
 		</div>

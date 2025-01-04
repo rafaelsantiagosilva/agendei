@@ -1,15 +1,19 @@
 import { useState } from 'react';
-import logo from '../../assets/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { Alert } from '../../components/alert';
 import { api } from '../../lib/api';
 import { AxiosError } from 'axios';
+import { StatusModal } from '../../components/statusModal';
+import { Button } from '../../components/button';
+import { LoginAndRegisterHeader } from '../../components/loginAndRegisterHeader';
 
 export default function Login() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [alertMessage, setAlertMessage] = useState('');
 	const navigate = useNavigate();
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	function clearAlertMessage() {
 		setAlertMessage('');
@@ -57,16 +61,9 @@ export default function Login() {
 	return (
 		<div className="flex w-full h-full">
 			<section className="bg-white w-[45%] h-screen flex flex-col justify-between p-8">
-				<header className="flex flex-col items-center justify-center">
-					<img
-						src={logo}
-						className="w-1/4 mb-8"
-						alt="A logo de Agendei, que possui um A inicial, com o nome da marca escrito em minusculo. Tudo em cor azul."
-					/>
-					<p className="text-xl text-center text-zinc-800 font-bold">
-						Gerencie seus agendamentos <br /> de forma descomplicada.
-					</p>
-				</header>
+				<LoginAndRegisterHeader>
+					Gerencie seus agendamentos <br /> de forma descomplicada.
+				</LoginAndRegisterHeader>
 				<main className="text-center">
 					<h2 className="text-xl mb-10">Acesse a sua conta</h2>
 					<form
@@ -90,12 +87,7 @@ export default function Login() {
 							value={password}
 							onChange={(event) => setPassword(event.target.value)}
 						/>
-						<button
-							type="submit"
-							className="text-white bg-blue-600 p-2 rounded hover:bg-blue-500"
-						>
-							Acessar
-						</button>
+						<Button type="submit">Acessar</Button>
 						{alertMessage.length > 0 && (
 							<Alert text={alertMessage} onClose={clearAlertMessage} />
 						)}
@@ -112,6 +104,14 @@ export default function Login() {
 				</footer>
 			</section>
 			<div className="bg-blue-400 bg-blue-doctor bg-cover bg-center w-[60%] h-screen"></div>
+			<StatusModal
+				title="Testando"
+				description="Testando o modal de sucesso!"
+				type="error"
+				onConfirm={() => alert('foo')}
+				onClose={() => setIsModalOpen(false)}
+				isOpen={isModalOpen}
+			/>
 		</div>
 	);
 }

@@ -1,5 +1,6 @@
 import { RequestWithUserId } from "@/interfaces/RequestWithUserId";
 import { AdminService } from "@/services/admin.service";
+import { AppointmentService } from "@/services/appointment.service";
 import { Admin } from "@prisma/client";
 import { Request, Response } from "express";
 
@@ -22,6 +23,17 @@ export class AdminController {
     } catch (error) {
       console.error(`> Error in get appointments to admin: ${error}`);
       res.status(500).json({ message: "Error in get appointments to admin", error });
+    }
+  }
+
+  public static async createAppointment(req: Request, res: Response) {
+    try {
+      const { user_id, doctor_id, service_id, booking_date, booking_hour } = req.body;
+      await AppointmentService.create({ id: 0, user_id, doctor_id, service_id, booking_date, booking_hour });
+      res.status(201).send({ message: `Appointment created with success!` });
+    } catch (error) {
+      console.error(`> Error in create appointment: ${error}`);
+      res.status(500).json({ message: "Error in create appointment", error });
     }
   }
 

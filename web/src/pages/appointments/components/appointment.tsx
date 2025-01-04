@@ -4,9 +4,10 @@ import { Appointment as AppointmentInterface } from '../../../interfaces/Appoint
 
 interface Props {
 	appointment: AppointmentInterface;
+	deleteFunction: (appointmentId: number) => void;
 }
 
-export function Appointment({ appointment }: Props) {
+export function Appointment({ appointment, deleteFunction }: Props) {
 	return (
 		<tr className="border-y">
 			<td className="p-4">{appointment.user.name}</td>
@@ -28,7 +29,7 @@ export function Appointment({ appointment }: Props) {
 				</Link>
 			</td>
 			<td>
-				<ActionButton type="delete" />
+				<ActionButton onClick={() => deleteFunction(Number(appointment.id))} type="delete" />
 			</td>
 		</tr>
 	);

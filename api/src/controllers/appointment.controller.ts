@@ -41,6 +41,18 @@ export class AppointmentController {
     }
   }
 
+  public static async update(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+      const { user_id, doctor_id, service_id, booking_date, booking_hour } = req.body;
+      await AppointmentService.update({ id, user_id, doctor_id, service_id, booking_date, booking_hour });
+      res.status(200).json({ message: "Appointment updated with success!" });
+    } catch (error) {
+      console.error(`> Error in update appointment: ${error}`);
+      res.status(500).json({ message: "Error in update appointment", error });
+    }
+  }
+
   public static async delete(req: Request, res: Response) {
     try {
       const { id } = req.params;

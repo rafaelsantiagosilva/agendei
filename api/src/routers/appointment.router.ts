@@ -7,6 +7,7 @@ const router = Router();
 router.get("/", (req, res, next) => { Jwt.validateToken(req, res, next) }, AppointmentController.findByUser);
 router.get("/:id", (req, res, next) => { Jwt.validateToken(req, res, next) }, AppointmentController.getById);
 router.post("/", (req, res, next) => { Jwt.validateToken(req, res, next) }, AppointmentController.create);
+router.put("/:id", (req, res, next) => { Jwt.validateToken(req, res, next) }, AppointmentController.update);
 router.delete("/:id", (req, res, next) => { Jwt.validateToken(req, res, next) }, AppointmentController.delete);
 
 export { router as appointmentRouter };

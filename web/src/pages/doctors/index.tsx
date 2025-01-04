@@ -1,25 +1,26 @@
 import { Header } from '../../components/header';
 import { OutlineButton } from '../../components/outlineButton';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../lib/api';
 import { Doctor as DoctorInterface } from '../../interfaces/Doctor';
 import { Doctor } from './components/doctor';
 import { getDoctors } from '../../services/getDoctors';
+import { Button } from '../../components/button';
 
 export default function Doctors() {
 	const [doctors, setDoctors] = useState<DoctorInterface[]>([]);
 	const [doctorFilterName, setDoctorFilterName] = useState('');
 	const navigate = useNavigate();
 
-	async function loadDoctors() {
+	const loadDoctors = useCallback(async () => {
 		try {
 			const data = await getDoctors(doctorFilterName);
 			setDoctors(data);
 		} catch (error) {
 			console.error(`> Error in load doctors: ${error}`);
 		}
-	}
+	}, [doctorFilterName]);
 
 	async function handleFilterDoctors() {
 		try {
@@ -36,18 +37,18 @@ export default function Doctors() {
 		}
 
 		loadDoctors();
-	}, [navigate]);
+	}, [navigate, loadDoctors]);
 
 	return (
 		<>
 			<Header page="doctors" />
-			<main className="p-4 overflow-x-auto">
+			<main className="p-6 overflow-x-auto">
 				<header className="flex items-center w-full justify-between mb-8">
 					<div className="flex w-1/3 items-center gap-6">
 						<h1 className="text-xl font-semibold">Médicos</h1>
 						<OutlineButton text="Novo Médico" />
 					</div>
-					<div className="flex items-center gap-8">
+					<div className="flex items-center">
 						<form
 							onSubmit={(event) => {
 								event.preventDefault();
@@ -56,19 +57,16 @@ export default function Doctors() {
 							className="flex gap-4 items-center"
 						>
 							<input
-								className="border-2 w-80 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
+								className="border-2 w-80 p-2 rounded text-zinc-800 focus:outline-none"
 								placeholder="Buscar por nome do médico"
 								name="doctorFilter"
 								id="doctorFilter"
 								value={doctorFilterName}
 								onChange={(event) => setDoctorFilterName(event.target.value)}
 							/>
-							<button
-								type="submit"
-								className="bg-blue-600 text-white p-2 px-5 rounded hover:bg-blue-500"
-							>
+							<Button className="px-5" type="submit">
 								Filtrar
-							</button>
+							</Button>
 						</form>
 					</div>
 				</header>

@@ -7,14 +7,10 @@ export function Doctor({ doctor }: { doctor: DoctorInterface }) {
 			<td className="p-4" colSpan={7}>
 				{doctor.name}
 			</td>
-			<div className="flex gap-8">
-				<td>
-					<ActionButton type="edit" />
-				</td>
-				<td>
-					<ActionButton type="delete" />
-				</td>
-			</div>
+			<td className='flex gap-3'>
+				<ActionButton type="edit" />
+				<ActionButton type="delete" />
+			</td>
 		</tr>
 	);
 }

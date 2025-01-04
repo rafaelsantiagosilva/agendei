@@ -90,12 +90,19 @@ export class AppointmentRepository {
     });
   }
 
-  public static async update(appointment: Appointment) {
+  public static async update({ id, user_id, doctor_id, service_id, booking_date, booking_hour }: Appointment) {
+    const isoBookingDate = new Date(booking_date).toISOString();
     await db.appointment.update({
       where: {
-        id: appointment.id
+        id: id
       },
-      data: appointment
+      data: {
+        user_id, 
+        doctor_id, 
+        service_id, 
+        booking_date: isoBookingDate, 
+        booking_hour
+      }
     });
   }
 

@@ -8,11 +8,44 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getAppointments } from '../../services/getAppointments';
 import { Doctor as DoctorInterface } from '../../interfaces/Doctor';
 import { getDoctors } from '../../services/getDoctors';
+import { Button } from '../../components/button';
+import { Modal } from '../../components/modal';
+import { StatusModal } from '../../components/statusModal';
 
 export default function Appointments() {
 	const [appointments, setAppointments] = useState<AppointmentInterface[]>([]);
 	const [doctors, setDoctors] = useState<DoctorInterface[]>([]);
+	const [appointmentToDeleteId, setAppointmentToDeleteId] = useState(0);
 	const navigate = useNavigate();
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+
+	function openModal(appointmentId: number) {
+		setAppointmentToDeleteId(appointmentId);
+		setIsModalOpen(true);
+	}
+
+	function closeModal() {
+		setIsModalOpen(false);
+	}
+
+	function openSuccessModal() {
+		setIsSuccessModalOpen(true);
+	}
+
+	function closeSuccessModal() {
+		setIsSuccessModalOpen(false);
+	}
+
+	function openErrorModal() {
+		setIsErrorModalOpen(true);
+	}
+
+	function closeErrorModal() {
+		setIsErrorModalOpen(false);
+	}
 
 	async function loadAppointments() {
 		try {
@@ -29,6 +62,22 @@ export default function Appointments() {
 			setDoctors(data);
 		} catch (error) {
 			console.error(`> Error in load doctors: ${error}`);
+		}
+	}
+
+	async function handleDeleteAppointment() {
+		try {
+			await api.delete(`/appointments/${appointmentToDeleteId}`);
+			setAppointments(
+				appointments.filter(
+					(appointment) => appointment.id != appointmentToDeleteId
+				)
+			);
+			closeModal();
+			openSuccessModal();
+		} catch (error) {
+			console.error(`> Error on delete appointment: ${error}`);
+			openErrorModal();
 		}
 	}
 
@@ -52,20 +101,20 @@ export default function Appointments() {
 							<OutlineButton text="Novo Agendamento" />
 						</Link>
 					</div>
-					<div className="flex items-center gap-8">
+					<form className="flex items-center gap-8">
 						<div className="flex items-center gap-3">
 							<input
 								className="border-2 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
 								type="date"
-								name=""
-								id=""
+								name="beginDate"
+								id="beginDate"
 							></input>
 							<span>até</span>
 							<input
 								className="border-2 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
 								type="date"
-								name=""
-								id=""
+								name="endDate"
+								id="endDate"
 							></input>
 						</div>
 						<div className="flex gap-4 items-center">
@@ -83,11 +132,11 @@ export default function Appointments() {
 									</option>
 								))}
 							</select>
-							<button className="bg-blue-600 text-white p-2 px-5 rounded hover:bg-blue-500">
+							<Button type="submit" className="px-5">
 								Filtrar
-							</button>
+							</Button>
 						</div>
-					</div>
+					</form>
 				</header>
 				<table className="table-auto border-y w-full">
 					<thead>
@@ -101,11 +150,44 @@ export default function Appointments() {
 					</thead>
 					<tbody>
 						{appointments.map((appointment) => {
-							return <Appointment key={appointment.id} appointment={appointment} />;
+							return (
+								<Appointment
+									key={appointment.id}
+									appointment={appointment}
+									deleteFunction={openModal}
+								/>
+							);
 						})}
 					</tbody>
 				</table>
 			</main>
+			<Modal
+				title="Confirmar exclusão de agendamento"
+				description="Você tem certeza que deseja alterar para estes dados?"
+				isOpen={isModalOpen}
+				onConfirm={() => handleDeleteAppointment()}
+				onClose={closeModal}
+			/>
+			<StatusModal
+				type="success"
+				isOpen={isSuccessModalOpen}
+				title="Agendamento deletado com sucesso"
+				description={
+					'O agendamento foi deletado com sucesso. Caso isso seja um erro, contate o administrador de TI imediatamente.'
+				}
+				onConfirm={closeSuccessModal}
+				onClose={closeSuccessModal}
+			/>
+			<StatusModal
+				type="error"
+				isOpen={isErrorModalOpen}
+				title="Erro"
+				description={
+					'Ocorreu um erro ao deletar o agendamento. Tente novamente mais tarde.'
+				}
+				onConfirm={closeErrorModal}
+				onClose={closeErrorModal}
+			/>
 		</>
 	);
 }

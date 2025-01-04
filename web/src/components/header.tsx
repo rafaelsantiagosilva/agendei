@@ -2,16 +2,38 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react';
 import logo from '../assets/white-logo.png';
 import { GoTriangleDown } from 'react-icons/go';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 export function Header({ page }: { page?: 'appointments' | 'doctors' }) {
+	const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+
+	function openDropdown() {
+		setIsDropDownOpen(true);
+	}
+
+	function closeDropdown() {
+		setIsDropDownOpen(false);
+	}
+
+	function changeDropdown() {
+		if (isDropDownOpen) {
+			closeDropdown();
+			return;
+		}
+
+		openDropdown();
+	}
+
 	return (
 		<header className="w-screen h-16 bg-blue-600 flex items-center justify-between p-2">
 			<div className="flex items-center">
-				<img
-					src={logo}
-					className="w-40 p-4 cursor-pointer"
-					alt="A logo de Agendei, que possui um A inicial, com o nome da marca escrito em minusculo. Tudo em cor branca."
-				/>
+				<Link to={'#'}>
+					<img
+						src={logo}
+						className="w-40 p-4 cursor-pointer"
+						alt="A logo de Agendei, que possui um A inicial, com o nome da marca escrito em minusculo. Tudo em cor branca."
+					/>
+				</Link>
 				<nav className="text-white flex gap-6">
 					<Link
 						to="/appointments"
@@ -32,9 +54,9 @@ export function Header({ page }: { page?: 'appointments' | 'doctors' }) {
 			<div>
 				<Menu as="div" className="relative inline-block text-left">
 					<div>
-						<MenuButton className="p-4 text-white flex items-center">
-							<span>{localStorage.getItem("username")}</span>
-							<GoTriangleDown className="text-4xl" />
+						<MenuButton onClick={changeDropdown} className="p-4 text-white flex items-center">
+							<span>{localStorage.getItem('username')}</span>
+							<GoTriangleDown className={`text-4xl transition-all ${isDropDownOpen ? 'rotate-180' : ''}`} />
 						</MenuButton>
 					</div>
 
