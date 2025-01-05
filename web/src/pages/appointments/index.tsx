@@ -14,6 +14,9 @@ import { StatusModal } from '../../components/statusModal';
 
 export default function Appointments() {
 	const [appointments, setAppointments] = useState<AppointmentInterface[]>([]);
+	const [visibleAppointments, setVisibleAppointments] = useState<
+		AppointmentInterface[]
+	>([]);
 	const [doctors, setDoctors] = useState<DoctorInterface[]>([]);
 	const [appointmentToDeleteId, setAppointmentToDeleteId] = useState(0);
 	const navigate = useNavigate();
@@ -21,6 +24,13 @@ export default function Appointments() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+
+	const NOW = new Date().toISOString();
+	const TODAY = NOW.slice(0, 10);
+
+	const [beginDate, setBeginDate] = useState(TODAY);
+	const [endDate, setEndDate] = useState(TODAY);
+	const [selectedDoctorId, setSelectedDoctorId] = useState(0);
 
 	function openModal(appointmentId: number) {
 		setAppointmentToDeleteId(appointmentId);
@@ -51,6 +61,7 @@ export default function Appointments() {
 		try {
 			const data = await getAppointments();
 			setAppointments(data);
+			setVisibleAppointments(data);
 		} catch (error) {
 			console.error(`> Error in load appointments: ${error}`);
 		}
@@ -81,6 +92,31 @@ export default function Appointments() {
 		}
 	}
 
+	function dateFilter(appointment: AppointmentInterface) {
+		const BEGIN_DATE_TIME = new Date(`${beginDate}T00:00:00Z`).getTime();
+		const END_DATE_TIME = new Date(`${endDate}T23:59:59Z`).getTime();
+		const APPOINTMENT_DATE_TIME = new Date(
+			appointment.booking_date.slice(0, 10)
+		).getTime();
+
+		return (
+			APPOINTMENT_DATE_TIME >= BEGIN_DATE_TIME &&
+			APPOINTMENT_DATE_TIME <= END_DATE_TIME
+		);
+	}
+
+	function handleFilter() {
+		let newAppointments = selectedDoctorId
+			? appointments.filter(
+					(appointment) => appointment.doctor_id === selectedDoctorId
+			  )
+			: appointments;
+
+		newAppointments = newAppointments.filter(dateFilter);
+
+		setVisibleAppointments(newAppointments);
+	}
+
 	useEffect(() => {
 		if (!api.defaults.headers.common.Authorization) {
 			navigate('/');
@@ -101,11 +137,19 @@ export default function Appointments() {
 							<OutlineButton text="Novo Agendamento" />
 						</Link>
 					</div>
-					<form className="flex items-center gap-8">
+					<form
+						onSubmit={(event) => {
+							event.preventDefault();
+							handleFilter();
+						}}
+						className="flex items-center gap-8"
+					>
 						<div className="flex items-center gap-3">
 							<input
 								className="border-2 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
 								type="date"
+								value={beginDate}
+								onChange={(event) => setBeginDate(event.target.value)}
 								name="beginDate"
 								id="beginDate"
 							></input>
@@ -113,6 +157,8 @@ export default function Appointments() {
 							<input
 								className="border-2 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
 								type="date"
+								value={endDate}
+								onChange={(event) => setEndDate(event.target.value)}
 								name="endDate"
 								id="endDate"
 							></input>
@@ -120,6 +166,8 @@ export default function Appointments() {
 						<div className="flex gap-4 items-center">
 							<select
 								className="border-2 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
+								value={selectedDoctorId}
+								onChange={(event) => setSelectedDoctorId(Number(event?.target.value))}
 								name="doctors"
 								id="doctors"
 							>
@@ -149,7 +197,7 @@ export default function Appointments() {
 						</tr>
 					</thead>
 					<tbody>
-						{appointments.map((appointment) => {
+						{visibleAppointments.map((appointment) => {
 							return (
 								<Appointment
 									key={appointment.id}
