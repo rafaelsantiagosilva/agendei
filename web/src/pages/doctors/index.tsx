@@ -7,28 +7,30 @@ import { Doctor as DoctorInterface } from '../../interfaces/Doctor';
 import { Doctor } from './components/doctor';
 import { getDoctors } from '../../services/getDoctors';
 import { Button } from '../../components/button';
+import { Input } from '../../components/input';
 
 export default function Doctors() {
 	const [doctors, setDoctors] = useState<DoctorInterface[]>([]);
+	const [visibleDoctors, setVisibleDoctors] = useState<DoctorInterface[]>([]);
 	const [doctorFilterName, setDoctorFilterName] = useState('');
 	const navigate = useNavigate();
 
 	const loadDoctors = useCallback(async () => {
 		try {
-			const data = await getDoctors(doctorFilterName);
+			const data = await getDoctors('');
 			setDoctors(data);
+			setVisibleDoctors(data);
 		} catch (error) {
 			console.error(`> Error in load doctors: ${error}`);
 		}
-	}, [doctorFilterName]);
+	}, []);
 
-	async function handleFilterDoctors() {
-		try {
-			const response = await api.get('/doctors?name=' + doctorFilterName);
-			setDoctors(response.data);
-		} catch (error) {
-			console.error(`> Error in load doctors: ${error}`);
-		}
+	function handleFilterDoctors() {
+		const newDoctors = doctors.filter((doctor) =>
+			doctor.name.toLowerCase().includes(doctorFilterName)
+		);
+
+		setVisibleDoctors(newDoctors);
 	}
 
 	useEffect(() => {
@@ -48,27 +50,23 @@ export default function Doctors() {
 						<h1 className="text-xl font-semibold">Médicos</h1>
 						<OutlineButton text="Novo Médico" />
 					</div>
-					<div className="flex items-center">
-						<form
-							onSubmit={(event) => {
-								event.preventDefault();
-								handleFilterDoctors();
-							}}
-							className="flex gap-4 items-center"
-						>
-							<input
-								className="border-2 w-80 p-2 rounded text-zinc-800 focus:outline-none"
-								placeholder="Buscar por nome do médico"
-								name="doctorFilter"
-								id="doctorFilter"
-								value={doctorFilterName}
-								onChange={(event) => setDoctorFilterName(event.target.value)}
-							/>
-							<Button className="px-5" type="submit">
-								Filtrar
-							</Button>
-						</form>
-					</div>
+					<form
+						onSubmit={(event) => {
+							event.preventDefault();
+							handleFilterDoctors();
+						}}
+						className="flex w-1/3 gap-4 items-center"
+					>
+						<Input
+							placeholder="Buscar por nome do médico"
+							className="w-full"
+							value={doctorFilterName}
+							onChange={(event) => setDoctorFilterName(event.target.value)}
+						/>
+						<Button className="px-5" type="submit">
+							Filtrar
+						</Button>
+					</form>
 				</header>
 				<table className="table-auto border-y w-full">
 					<thead>
@@ -79,7 +77,7 @@ export default function Doctors() {
 						</tr>
 					</thead>
 					<tbody>
-						{doctors.map((doctor) => (
+						{visibleDoctors.map((doctor) => (
 							<Doctor key={doctor.id} doctor={doctor} />
 						))}
 					</tbody>
