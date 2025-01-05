@@ -4,6 +4,7 @@ import { Alert } from '../../components/alert';
 import { api } from '../../lib/api';
 import { Button } from '../../components/button';
 import { LoginAndRegisterHeader } from '../../components/loginAndRegisterHeader';
+import { Input } from '../../components/input';
 
 export default function Register() {
 	const [name, setName] = useState('');
@@ -79,31 +80,27 @@ export default function Register() {
 						}}
 						className="flex flex-col gap-4 w-72 mx-auto"
 					>
-						<input
+						<Input
 							type="text"
 							placeholder="Nome"
-							className="border-2 rounded p-2 focus:outline-none"
 							value={name}
 							onChange={(event) => setName(event.target.value)}
 						/>
-						<input
-							type="text"
-							placeholder="E-mail"
-							className="border-2 rounded p-2 focus:outline-none"
+						<Input
+							type="email"
+							placeholder="E-email"
 							value={email}
 							onChange={(event) => setEmail(event.target.value)}
 						/>
-						<input
+						<Input
 							type="password"
 							placeholder="Senha"
-							className="border-2 rounded p-2 focus:outline-none"
 							value={password}
 							onChange={(event) => setPassword(event.target.value)}
 						/>
-						<input
+						<Input
 							type="password"
 							placeholder="Confirme a senha"
-							className="border-2 rounded p-2 focus:outline-none"
 							value={confirmPassword}
 							onChange={(event) => setConfirmPassword(event.target.value)}
 						/>

@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 import { StatusModal } from '../../components/statusModal';
 import { Button } from '../../components/button';
 import { LoginAndRegisterHeader } from '../../components/loginAndRegisterHeader';
+import { Input } from '../../components/input';
 
 export default function Login() {
 	const [email, setEmail] = useState('');
@@ -73,17 +74,15 @@ export default function Login() {
 						}}
 						className="flex flex-col gap-4 w-72 mx-auto"
 					>
-						<input
+						<Input
 							type="email"
-							placeholder="E-mail"
-							className="border-2 rounded p-2 focus:outline-none"
+							placeholder="E-email"
 							value={email}
 							onChange={(event) => setEmail(event.target.value)}
 						/>
-						<input
+						<Input
 							type="password"
 							placeholder="Senha"
-							className="border-2 rounded p-2 focus:outline-none"
 							value={password}
 							onChange={(event) => setPassword(event.target.value)}
 						/>

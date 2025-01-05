@@ -15,6 +15,8 @@ import { getOneAppointment } from '../../services/getOneAppointment';
 import { Modal } from '../../components/modal';
 import { Button } from '../../components/button';
 import { StatusModal } from '../../components/statusModal';
+import { Select } from '../../components/select';
+import { Input } from '../../components/input';
 
 export default function AddAppointment() {
 	const appointmentId = Number(useParams()?.id);
@@ -183,7 +185,9 @@ export default function AddAppointment() {
 			);
 			openSuccessModal();
 		} catch (error) {
-			console.error(`> Error in update appointment with id ${appointmentId}: ${error}`);
+			console.error(
+				`> Error in update appointment with id ${appointmentId}: ${error}`
+			);
 			setErrorModalDescription(
 				'Ocorreu um erro ao editar o agendamento. Por favor, tente novamente mais tarde.'
 			);
@@ -237,14 +241,11 @@ export default function AddAppointment() {
 					{alertMessage.length > 0 && (
 						<Alert text={alertMessage} onClose={clearAlertMessage} />
 					)}
-					<div className="w-full">
+					<div className="w-full flex flex-col">
 						<label htmlFor="customer">Cliente</label>
-						<select
-							className="border-2 p-2 pr-8 cursor-pointer rounded w-full text-zinc-800 focus:outline-none"
+						<Select
 							onChange={(event) => setSelectedCustomerId(Number(event.target.value))}
 							value={selectedCustomerId}
-							name="customer"
-							id="customer"
 						>
 							<option value="0">Selecione o cliente</option>
 							{customers.map((customer) => (
@@ -256,16 +257,13 @@ export default function AddAppointment() {
 									{customer.name}
 								</option>
 							))}
-						</select>
+						</Select>
 					</div>
-					<div className="w-full">
+					<div className="w-full flex flex-col">
 						<label htmlFor="doctor">Médico</label>
-						<select
-							className="border-2 p-2 pr-8 cursor-pointer rounded w-full text-zinc-800 focus:outline-none"
+						<Select
 							onChange={(event) => setSelectedDoctorId(Number(event.target.value))}
 							value={selectedDoctorId}
-							name="doctor"
-							id="doctor"
 						>
 							<option value="0" defaultChecked>
 								Selecione o médico
@@ -275,16 +273,13 @@ export default function AddAppointment() {
 									{doctor.name}
 								</option>
 							))}
-						</select>
+						</Select>
 					</div>
-					<div className="w-full">
+					<div className="w-full flex flex-col">
 						<label htmlFor="service">Serviço</label>
-						<select
-							className="border-2 p-2 pr-8 cursor-pointer rounded w-full text-zinc-800 focus:outline-none"
+						<Select
 							onChange={(event) => setSelectedServiceId(Number(event.target.value))}
 							value={selectedServiceId}
-							name="service"
-							id="service"
 						>
 							<option value="0" defaultChecked>
 								{doctorServices.length > 0
@@ -298,28 +293,23 @@ export default function AddAppointment() {
 									{doctorService.description}
 								</option>
 							))}
-						</select>
+						</Select>
 					</div>
-					<div className="flex gap-4 w-full">
+					<div className="flex items-center gap-4 w-full">
 						<div className="flex flex-col w-1/2">
 							<label htmlFor="date">Data</label>
-							<input
-								className="h-10 border-2 p-2 pr-8 cursor-pointer rounded text-zinc-800 focus:outline-none"
+							<Input
+								className="text-zinc-800"
 								onChange={(event) => setDate(event.target.value)}
 								value={date}
 								type="date"
-								name="date"
-								id="date"
 							/>
 						</div>
 						<div className="flex flex-col w-1/2">
 							<label htmlFor="hour">Hora</label>
-							<select
-								className="h-10 border-2 p-2 pr-8 cursor-pointer rounded text-zinc-800 focus:outline-none"
+							<Select
 								onChange={(event) => setSelectedHour(event.target.value)}
 								value={selectedHour}
-								name="hour"
-								id="hour"
 							>
 								<option value="09:00">09:00</option>
 								<option value="09:30">09:30</option>
@@ -328,7 +318,7 @@ export default function AddAppointment() {
 								<option value="11:00">11:00</option>
 								<option value="11:30">11:30</option>
 								<option value="12:00">12:00</option>
-							</select>
+							</Select>
 						</div>
 					</div>
 					<div className="flex gap-5">

@@ -11,6 +11,8 @@ import { getDoctors } from '../../services/getDoctors';
 import { Button } from '../../components/button';
 import { Modal } from '../../components/modal';
 import { StatusModal } from '../../components/statusModal';
+import { Input } from '../../components/input';
+import { Select } from '../../components/select';
 
 export default function Appointments() {
 	const [appointments, setAppointments] = useState<AppointmentInterface[]>([]);
@@ -145,31 +147,28 @@ export default function Appointments() {
 						className="flex items-center gap-8"
 					>
 						<div className="flex items-center gap-3">
-							<input
-								className="border-2 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
+							<Input
+								className="text-zinc-800 "
 								type="date"
 								value={beginDate}
 								onChange={(event) => setBeginDate(event.target.value)}
 								name="beginDate"
 								id="beginDate"
-							></input>
+							/>
 							<span>até</span>
-							<input
-								className="border-2 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
+							<Input
+								className="text-zinc-800"
 								type="date"
 								value={endDate}
 								onChange={(event) => setEndDate(event.target.value)}
 								name="endDate"
 								id="endDate"
-							></input>
+							/>
 						</div>
 						<div className="flex gap-4 items-center">
-							<select
-								className="border-2 p-2 pr-8 rounded text-zinc-800 focus:outline-none"
+							<Select
 								value={selectedDoctorId}
 								onChange={(event) => setSelectedDoctorId(Number(event?.target.value))}
-								name="doctors"
-								id="doctors"
 							>
 								<option value={0} defaultChecked>
 									Todos os médicos
@@ -179,7 +178,7 @@ export default function Appointments() {
 										{doctor.name}
 									</option>
 								))}
-							</select>
+							</Select>
 							<Button type="submit" className="px-5">
 								Filtrar
 							</Button>
