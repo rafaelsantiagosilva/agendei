@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ActionButton } from '../../../components/actionButton';
+import { ActionButton } from '../../../components/buttons/actionButton';
 import { Appointment as AppointmentInterface } from '../../../interfaces/Appointment';
 
 interface Props {
@@ -24,12 +24,15 @@ export function Appointment({ appointment, deleteFunction }: Props) {
 				}).format(Number(appointment.doctorService.price))}
 			</td>
 			<td>
-				<Link to={"/appointments/edit/" + appointment.id}>
+				<Link to={'/appointments/edit/' + appointment.id}>
 					<ActionButton type="edit" />
 				</Link>
 			</td>
 			<td>
-				<ActionButton onClick={() => deleteFunction(Number(appointment.id))} type="delete" />
+				<ActionButton
+					onClick={() => deleteFunction(Number(appointment.id))}
+					type="delete"
+				/>
 			</td>
 		</tr>
 	);

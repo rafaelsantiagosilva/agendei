@@ -1,6 +1,6 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Header } from '../../components/header';
-import { OutlineButton } from '../../components/outlineButton';
+import { Header } from '../../components/headers/header';
+import { OutlineButton } from '../../components/buttons/outlineButton';
 import { useEffect, useState, useCallback } from 'react';
 import { User as UserInterface } from '../../interfaces/User';
 import { Doctor as DoctorInterface } from '../../interfaces/Doctor';
@@ -12,11 +12,11 @@ import { api } from '../../lib/api';
 import { Alert } from '../../components/alert';
 import { Appointment as AppointmentInterface } from '../../interfaces/Appointment';
 import { getOneAppointment } from '../../services/getOneAppointment';
-import { Modal } from '../../components/modal';
-import { Button } from '../../components/button';
-import { StatusModal } from '../../components/statusModal';
-import { Select } from '../../components/select';
-import { Input } from '../../components/input';
+import { Modal } from '../../components/modals/modal';
+import { Button } from '../../components/buttons/button';
+import { StatusModal } from '../../components/modals/statusModal';
+import { Select } from '../../components/inputs/select';
+import { Input } from '../../components/inputs/input';
 
 export default function AddAppointment() {
 	const appointmentId = Number(useParams()?.id);
@@ -86,14 +86,6 @@ export default function AddAppointment() {
 	}
 
 	function validateValues() {
-		console.table({
-			selectedCustomerId,
-			selectedDoctorId,
-			selectedServiceId,
-			date,
-			selectedHour,
-		});
-
 		if (
 			selectedCustomerId === 0 ||
 			selectedDoctorId === 0 ||

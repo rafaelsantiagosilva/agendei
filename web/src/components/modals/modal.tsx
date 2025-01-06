@@ -1,6 +1,6 @@
 import { IoClose } from 'react-icons/io5';
-import { OutlineButton } from './outlineButton';
-import { Button } from './button';
+import { OutlineButton } from '../buttons/outlineButton';
+import { Button } from '../buttons/button';
 
 interface Props {
 	title: string;

@@ -1,5 +1,5 @@
-import { Header } from '../../components/header';
-import { OutlineButton } from '../../components/outlineButton';
+import { Header } from '../../components/headers/header';
+import { OutlineButton } from '../../components/buttons/outlineButton';
 import { Appointment as AppointmentInterface } from '../../interfaces/Appointment';
 import { useEffect, useState } from 'react';
 import { api } from '../../lib/api';
@@ -8,11 +8,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getAppointments } from '../../services/getAppointments';
 import { Doctor as DoctorInterface } from '../../interfaces/Doctor';
 import { getDoctors } from '../../services/getDoctors';
-import { Button } from '../../components/button';
-import { Modal } from '../../components/modal';
-import { StatusModal } from '../../components/statusModal';
-import { Input } from '../../components/input';
-import { Select } from '../../components/select';
+import { Button } from '../../components/buttons/button';
+import { Modal } from '../../components/modals/modal';
+import { StatusModal } from '../../components/modals/statusModal';
+import { Input } from '../../components/inputs/input';
+import { Select } from '../../components/inputs/select';
 
 export default function Appointments() {
 	const [appointments, setAppointments] = useState<AppointmentInterface[]>([]);
@@ -128,6 +128,10 @@ export default function Appointments() {
 		loadDoctors();
 	}, [navigate]);
 
+	useEffect(() => {
+		setVisibleAppointments(appointments);
+	}, [appointments]);
+
 	return (
 		<>
 			<Header page="appointments" />
@@ -210,7 +214,7 @@ export default function Appointments() {
 			</main>
 			<Modal
 				title="Confirmar exclusão de agendamento"
-				description="Você tem certeza que deseja alterar para estes dados?"
+				description="Você tem certeza que deseja deletar estes dados?"
 				isOpen={isModalOpen}
 				onConfirm={() => handleDeleteAppointment()}
 				onClose={closeModal}

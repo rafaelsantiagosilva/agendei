@@ -1,5 +1,5 @@
 import { db } from "@/lib/prisma";
-import { Doctor, Service } from "@prisma/client";
+import { Doctor, DoctorService, Service } from "@prisma/client";
 
 interface ServiceWithPrice {
   id: number;
@@ -18,6 +18,12 @@ export class DoctorRepository {
       orderBy: {
         name: "asc"
       }
+    });
+  }
+
+  public static async getById(id: number) {
+    return await db.doctor.findFirst({
+      where: { id }
     });
   }
 
@@ -45,13 +51,19 @@ export class DoctorRepository {
   }
 
   public static async create({ name, specialty, icon }: Doctor) {
-    await db.doctor.create({
+    const doctor = await db.doctor.create({
       data: {
         name,
         specialty,
         icon
       }
     });
+
+    return doctor.id;
+  }
+
+  public static async createServices(doctorServices: DoctorService[]) {
+    await db.doctorService.createMany({ data: doctorServices });
   }
 
   public static async update(doctor: Doctor) {

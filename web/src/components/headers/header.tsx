@@ -1,5 +1,5 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react';
-import logo from '../assets/white-logo.png';
+import logo from '../../assets/white-logo.png';
 import { GoTriangleDown } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';

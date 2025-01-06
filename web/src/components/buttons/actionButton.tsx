@@ -1,8 +1,9 @@
 import { FaEdit } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import { FaPlus } from 'react-icons/fa6';
 
 interface Props {
-	type: 'edit' | 'delete';
+	type: 'edit' | 'delete' | 'add';
 	onClick?: () => void;
 }
 
@@ -17,6 +18,10 @@ export function ActionButton({ type, onClick }: Props) {
 		case 'delete':
 			color = 'bg-red-600 hover:bg-red-500';
 			Icon = RiDeleteBin6Line;
+			break;
+		case 'add':
+			color = 'bg-blue-600 hover:bg-blue-500';
+			Icon = FaPlus;
 			break;
 	}
 

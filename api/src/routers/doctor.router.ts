@@ -5,6 +5,7 @@ import { Router } from "express";
 const router = Router();
 
 router.get("/", (req, res, next) => { Jwt.validateToken(req, res, next) }, DoctorController.getAll);
+router.get("/:id", (req, res, next) => { Jwt.validateToken(req, res, next) }, DoctorController.getById);
 router.post("/", (req, res, next) => { Jwt.validateToken(req, res, next) }, DoctorController.create);
 router.put("/:id", (req, res, next) => { Jwt.validateToken(req, res, next) }, DoctorController.update)
 router.delete("/:id", (req, res, next) => { Jwt.validateToken(req, res, next) }, DoctorController.delete);

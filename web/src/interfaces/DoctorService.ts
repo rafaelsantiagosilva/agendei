@@ -1,5 +1,5 @@
-export interface DoctorService {
-  id: number;
-  description: string;
+import { Service } from "./Service";
+
+export interface DoctorService extends Service {
   price: string;
 }

@@ -3,18 +3,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Alert } from '../../components/alert';
 import { api } from '../../lib/api';
 import { AxiosError } from 'axios';
-import { StatusModal } from '../../components/statusModal';
-import { Button } from '../../components/button';
-import { LoginAndRegisterHeader } from '../../components/loginAndRegisterHeader';
-import { Input } from '../../components/input';
+import { Button } from '../../components/buttons/button';
+import { LoginAndRegisterHeader } from '../../components/headers/loginAndRegisterHeader';
+import { Input } from '../../components/inputs/input';
 
 export default function Login() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [alertMessage, setAlertMessage] = useState('');
 	const navigate = useNavigate();
-
-	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	function clearAlertMessage() {
 		setAlertMessage('');
@@ -103,14 +100,6 @@ export default function Login() {
 				</footer>
 			</section>
 			<div className="bg-blue-400 bg-blue-doctor bg-cover bg-center w-[60%] h-screen"></div>
-			<StatusModal
-				title="Testando"
-				description="Testando o modal de sucesso!"
-				type="error"
-				onConfirm={() => alert('foo')}
-				onClose={() => setIsModalOpen(false)}
-				isOpen={isModalOpen}
-			/>
 		</div>
 	);
 }

@@ -2,9 +2,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Alert } from '../../components/alert';
 import { api } from '../../lib/api';
-import { Button } from '../../components/button';
-import { LoginAndRegisterHeader } from '../../components/loginAndRegisterHeader';
-import { Input } from '../../components/input';
+import { Button } from '../../components/buttons/button';
+import { LoginAndRegisterHeader } from '../../components/headers/loginAndRegisterHeader';
+import { Input } from '../../components/inputs/input';
 
 export default function Register() {
 	const [name, setName] = useState('');

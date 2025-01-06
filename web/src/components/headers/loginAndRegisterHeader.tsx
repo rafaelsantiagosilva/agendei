@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react';
-import logo from '../assets/logo.png';
+import logo from '../../assets/logo.png';
 
 export function LoginAndRegisterHeader({children}: ComponentProps<"header">) {
 	return (
