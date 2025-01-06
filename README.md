@@ -12,7 +12,6 @@ Originalmente idealizado por [DevPoint](https://www.youtube.com/@devpoint.oficia
 
 <div style="heigth: 20px; display: flex; align-items: center;  justify-content: center">
 <img src="./images/web/login.png" style="scale: 0.7" />
-<img src="./images/mobile/login.jpg" style="scale: 0.3" width="500px" />
 </div>
 
 ## Tecnologias 🛠️
