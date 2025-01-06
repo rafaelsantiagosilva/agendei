@@ -199,7 +199,10 @@ export default function AddDoctor() {
 				});
 			});
 
-			await api.put(`/doctors/${doctorId}`, { doctor, doctorServices: moreDoctorServices });
+			await api.put(`/doctors/${doctorId}`, {
+				doctor,
+				doctorServices: moreDoctorServices,
+			});
 
 			setSuccessModalTitle('Médico editado');
 			setSuccessModalDescription(

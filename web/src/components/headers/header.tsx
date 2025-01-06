@@ -68,14 +68,6 @@ export function Header({ page }: { page?: 'appointments' | 'doctors' }) {
 							<MenuItem>
 								<a
 									href="#"
-									className="block px-4 py-2 text-sm border-b text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
-								>
-									Minha Conta
-								</a>
-							</MenuItem>
-							<MenuItem>
-								<a
-									href="#"
 									className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
 								>
 									Sair
