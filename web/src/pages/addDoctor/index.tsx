@@ -238,8 +238,8 @@ export default function AddDoctor() {
 
 	useEffect(() => {
 		loadServices();
-		loadDoctorServices();
-	}, [loadServices, loadDoctorServices]);
+		if (doctor) loadDoctorServices();
+	}, [loadServices, loadDoctorServices, doctor]);
 
 	return (
 		<>
