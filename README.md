@@ -2,6 +2,8 @@
 <img src="./web/src/assets/logo.png" alt="Logo da aplicação" />
 </center>
 
+[Web 🌐](./web/README.md) [API ⛓️‍💥](./api/README.md) [Mobile 📱](./mobile/README.md)
+
 ## Sobre ℹ️
 
 Um serviço fullstack, contendo aplicações para web, mobile e uma API Restfull que se comunica com um banco de dados SQLite, tudo com a linguagem de programação **TypeScript**.
